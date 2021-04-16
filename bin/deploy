@@ -5,3 +5,6 @@
 # 1. backup the database
 # 2. pull latest code from github
 # 3. restart any services needed
+docker exec -t postgres pg_dumpall -c -U postgres > ../data/backups/banana_$(date +%s).sql
+docker-compose -f ../etc/docker/docker-compose.yml down -v
+docker-compose -f ../etc/docker/docker-compose.yml up -d --build
