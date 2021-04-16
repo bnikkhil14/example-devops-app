@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
 # stop all services here...
+docker-compose -f ../etc/docker/docker-compose.yml down -v
