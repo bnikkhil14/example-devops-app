@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
 # dump the postgresql database to a file, e.g. data/backups/banana_$(date +%s).sql
+docker exec -t postgres pg_dumpall -c -U postgres > ../data/backups/banana_$(date +%s).sql
+docker-compose -f ../etc/docker/docker-compose.yml down -v
