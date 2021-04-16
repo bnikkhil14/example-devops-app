@@ -2,21 +2,42 @@
 
 version: '3.7'
 services:
-    postgresql:
-        image:  postgres:11
+      db:
+        image:  postgres:12.0-alpine
+        container_name: postgres
         restart: always
         volumes:
-            - ./data/database:/var/lib/postgresql/data
+            - postgres_data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=passw0rd
+
         logging:
             driver: "json-file"
             options:
                 max-size: "10m"
                 max-file: "3"
+      nginx:
+              build: ../nginx
+              volumes:
+                - staticfiles:/app/static
+              ports:
+                 - 80:80
+              depends_on:
+                    - web
         
-    nginx:
-        ...
-
-    django:
-        ...
-
- 
+      web:
+       build: .
+       command: python manage.py runserver 0.0.0.0:8000
+       volumes:
+         - ./app/:/usr/src/app/
+       expose:
+          - 8000
+       env_file:
+         - ./.env
+       depends_on:
+         - db
+volumes:
+        postgres_data:
+        staticfiles:
