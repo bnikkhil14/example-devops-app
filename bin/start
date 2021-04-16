@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
 # start all services needed to run the app here...
+docker-compose -f ../etc/docker/docker-compose.yml up -d --build
